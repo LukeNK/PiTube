@@ -8,20 +8,30 @@
 </head>
 <body>
     <nav>
-        <h1>PiTube</h1>
+        <div>
+            <h1>PiTube</h1>
+        </div>
+        <div>
+            <button onclick="changeMode('a')">A</button>
+            <button onclick="changeMode('m')">M</button>
+        </div>
     </nav>
     <main>
         <div id="player">
             <video id="playerVid" controls></video>
+            <audio id="playerAud" controls></audio>
             <div id="controls">
-                <!-- <button onclick="document.getElementById('playerVid').currentTime += 5">-5s</button>
-                <button onclick="document.getElementById('playerVid').currentTime += 5">+5s</button> -->
+                <button onclick="toggleLoop()">Loop</button>
+                <!-- <button onclick="document.id('playerVid').currentTime += 5">-5s</button>
+                <button onclick="document.id('playerVid').currentTime += 5">+5s</button> -->
             </div>
         </div>
         <div id="browse"></div>
     </main>
 </body>
 <script>
+    document.id = document.getElementById;
+
     // check url expiration date
     function expireCheck(url) {
         url = new URL(url)
@@ -30,9 +40,32 @@
         return false
     }
 
+    // mode
+    let playerMode = 'm'
+    function changeMode(mode) {
+        playerMode = mode;
+        if (mode == 'a') {
+            // audio only
+            document.id('playerAud').style.display = 'block';
+            document.id('playerVid').style.display = 'none';
+        } else if (mode == 'm') {
+            // mix video mode
+            document.id('playerAud').style.display = 'none';
+            document.id('playerVid').style.display = 'block';
+        }
+    }
+    changeMode('m'); // init
+
+    // loop
+    function toggleLoop() {
+        document.id('playerVid').loop = !document.id('playerVid').loop;
+        document.id('playerAud').loop = !document.id('playerAud').loop;
+    }
+
+    // fetch database
     fetch('/database').then(res => res.json())
     .then(res => {
-        let browse = document.getElementById('browse');
+        let browse = document.id('browse');
         for (const id of Object.keys(res)) {
             // client check links to reduce server load
             if (!expireCheck(res[id].url))
@@ -43,11 +76,11 @@
 
             div.innerHTML = `<img src="${res[id].thumbnail_url}">`;
             div.addEventListener('click', ev => {
-                document.getElementById('player').style.display = 'block';
-                document.getElementById('playerVid').setAttribute(
-                    'src',
-                    res[id].url
-                )
+                document.id('player').style.display = 'block';
+                if (playerMode == 'a')
+                    document.id('playerAud').src = res[id].aUrl
+                else
+                    document.id('playerVid').src = res[id].url
             })
 
             h.innerText = res[id].title

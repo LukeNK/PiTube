@@ -111,17 +111,22 @@ http.createServer((req, res) => {
                 thumbnail_url: info.videoDetails.thumbnails[0].url,
             }
 
-            let urls = []
-            info.formats.forEach(vid => {
+            info.formats.forEach(vid  => {
                 if (
                     vid.hasAudio && vid.hasVideo
                     && vid.container == 'mp4'
+                    && !database[id].url // empty
                 )
-                    urls.push(vid.url)
+                    database[id].url = vid.url;
+                if (
+                    vid.hasAudio && !vid.hasVideo
+                    && !database[id].aUrl
+                )
+                    database[id].aUrl = vid.url;
             });
-            redirect(res, `/client/index.html#` + id);
+            console.log(info.formats)
 
-            database[id].url = urls[0];
+            redirect(res, `/client/index.html#` + id);
             database.save();
         });
     })

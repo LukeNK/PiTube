@@ -16,6 +16,7 @@ a.btn, button {
     cursor: pointer;
     padding: 1rem;
     outline: none;
+    border: 0px none transparent;
     background-color: var(--color-theme);
     text-decoration: none;
     font-size: 18px;
@@ -30,9 +31,14 @@ body {
 
 nav {
     position: fixed;
+    display: flex;
+    justify-content: space-between;
     top: 0; left: 0;
     width: 100%;
     background-color: var(--color-dark);
+}
+nav button {
+    height: 100%;
 }
 
 #player {
@@ -43,6 +49,10 @@ nav {
     display: block;
     margin: auto;
     max-height: 50vh;
+    width: 100%;
+}
+
+#playerAud {
     width: 100%;
 }
 
