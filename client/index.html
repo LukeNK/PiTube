@@ -15,7 +15,7 @@
         <div id="controls">
             <button onclick="changeMode('a')">Audio</button>
             <button onclick="changeMode('m')">Mix</button>
-            <button onclick="toggleLoop()">Loop</button>
+            <button onclick="toggleLoop(this)">Loop</button>
             <!-- <button onclick="document.id('playerVid').currentTime += 5">-5s</button>
             <button onclick="document.id('playerVid').currentTime += 5">+5s</button> -->
         </div>
@@ -52,9 +52,11 @@
     changeMode('m'); // init
 
     // loop
-    function toggleLoop() {
+    function toggleLoop(btn) {
         document.id('playerVid').loop = !document.id('playerVid').loop;
         document.id('playerAud').loop = !document.id('playerAud').loop;
+        // button color
+        btn.classList.toggle('redBg')
     }
 
     // fetch database

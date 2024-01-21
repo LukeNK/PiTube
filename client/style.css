@@ -26,6 +26,11 @@ a.btn:hover, button:hover {
     color: var(--color-theme);
 }
 
+.redBg {
+    background-color: var(--color-red);
+    color: var(--color-bg);
+}
+
 /* ----------------------------------Layout---------------------------------- */
 body {
     margin: 0;
@@ -83,8 +88,4 @@ main {
 #browse > div img {
     max-width: 10rem;
     height: auto;
-}
-
-#info {
-
 }
