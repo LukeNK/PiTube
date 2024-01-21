@@ -7,24 +7,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav>
-        <div>
-            <h1>PiTube</h1>
-        </div>
-        <div>
-            <button onclick="changeMode('a')">A</button>
-            <button onclick="changeMode('m')">M</button>
-        </div>
-    </nav>
     <main>
         <div id="player">
             <video id="playerVid" controls></video>
             <audio id="playerAud" controls></audio>
-            <div id="controls">
-                <button onclick="toggleLoop()">Loop</button>
-                <!-- <button onclick="document.id('playerVid').currentTime += 5">-5s</button>
-                <button onclick="document.id('playerVid').currentTime += 5">+5s</button> -->
-            </div>
+        </div>
+        <div id="controls">
+            <button onclick="changeMode('a')">Audio</button>
+            <button onclick="changeMode('m')">Mix</button>
+            <button onclick="toggleLoop()">Loop</button>
+            <!-- <button onclick="document.id('playerVid').currentTime += 5">-5s</button>
+            <button onclick="document.id('playerVid').currentTime += 5">+5s</button> -->
         </div>
         <div id="browse"></div>
     </main>
