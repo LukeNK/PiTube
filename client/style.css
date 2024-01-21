@@ -1,0 +1,72 @@
+* {
+    box-sizing: border-box;
+    /* CSS HEX */
+    --color-fg: #f6e8eaff;
+    --color-bg: #22181cff;
+    --color-red: #ef626cff;
+    --color-theme: #84dccfff;
+    --color-dark: #312f2fff;
+}
+
+/* ---------------------------------Elements--------------------------------- */
+
+
+/* ----------------------------------Classes--------------------------------- */
+a.btn, button {
+    cursor: pointer;
+    padding: 1rem;
+    outline: none;
+    background-color: var(--color-theme);
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* ----------------------------------Layout---------------------------------- */
+body {
+    padding-top: 4rem;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+}
+
+nav {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    background-color: var(--color-dark);
+}
+
+#player {
+    display: none;
+}
+
+#playerVid {
+    width: 100%;
+}
+
+#controls {
+    display: flex;
+}
+#controls button {
+    width: 100%;
+}
+
+#browse {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+#browse > div {
+    cursor: pointer;
+    width: 10rem;
+    margin: 0.25rem;
+    padding: 0.25rem;
+}
+#browse > div:hover {
+    color: var(--color-theme);
+}
+
+#browse > div img {
+    max-width: 10rem;
+    height: auto;
+}

@@ -6,14 +6,6 @@ const fs = require('fs'),
 
 let database = {
     save: () => {
-        console.log(JSON.stringify(
-            database,
-            (key, value) => {
-                if (key == 'save') return undefined;
-                else return value;
-            },
-            '    '
-        ))
         fs.writeFileSync(
             'database.json',
             JSON.stringify(
@@ -59,7 +51,16 @@ http.createServer((req, res) => {
 
         if (url.pathname == '/')
             return redirect(res, '/client/index.html'); // home page
-        else if (url.pathname.startsWith('/client')) {
+        else if (url.pathname == '/database') {
+            res.write(JSON.stringify(
+                database,
+                (key, value) => {
+                    if (key == 'save') return undefined;
+                    else return value;
+                }
+            ));
+            return res.end();
+        } else if (url.pathname.startsWith('/client')) {
             // static client files
             res.write(fs.readFileSync('.' + url.pathname, 'utf-8'));
             return res.end();
@@ -94,7 +95,6 @@ http.createServer((req, res) => {
                 length: info.videoDetails.lengthSeconds,
                 thumbnail_url: info.videoDetails.thumbnails[0].url,
             }
-            console.log(database[id]);
 
             let urls = []
             info.formats.forEach(vid => {
@@ -109,6 +109,6 @@ http.createServer((req, res) => {
 
             database[id].url = urls[0];
             database.save();
-        })
+        });
     })
 }).listen(8080);

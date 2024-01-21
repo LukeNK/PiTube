@@ -1,17 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>PiTube</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav>
-
+        <h1>PiTube</h1>
     </nav>
     <main>
-        <p></p>
+        <div id="player">
+            <video id="playerVid" controls></video>
+            <div id="controls">
+                <!-- <button onclick="document.getElementById('playerVid').currentTime += 5">-5s</button>
+                <button onclick="document.getElementById('playerVid').currentTime += 5">+5s</button> -->
+            </div>
+        </div>
+        <div id="browse"></div>
     </main>
 </body>
 <script>
+    fetch('/database').then(res => res.json())
+    .then(res => {
+        let browse = document.getElementById('browse');
+        for (const id of Object.keys(res)) {
+            let div = document.createElement('div'),
+                h = document.createElement('h3');
 
+            div.innerHTML = `<img src="${res[id].thumbnail_url}">`;
+            div.addEventListener('click', ev => {
+                document.getElementById('player').style.display = 'block';
+                document.getElementById('playerVid').setAttribute(
+                    'src',
+                    res[id].url
+                )
+            })
+
+            h.innerText = res[id].title
+
+            div.append(h);
+            browse.prepend(div);
+        }
+    });
 </script>
 </html>
