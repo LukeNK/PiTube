@@ -1,6 +1,5 @@
 const fs = require('fs'),
     http = require('http'),
-    https = require('https'),
     URL = require('url').URL,
     ytdl = require('ytdl-core');
 
@@ -120,11 +119,11 @@ http.createServer((req, res) => {
                     database[id].url = vid.url;
                 if (
                     vid.hasAudio && !vid.hasVideo
+                    && vid.container == 'mp4' // added to support my old phone
                     && !database[id].aUrl
                 )
                     database[id].aUrl = vid.url;
             });
-            console.log(info.formats)
 
             redirect(res, `/client/index.html#` + id);
             database.save();
