@@ -23,6 +23,7 @@
     </main>
 </body>
 <script>
+    let database = {}; // database
     document.id = document.getElementById;
 
     // check url expiration date
@@ -34,22 +35,34 @@
     }
 
     // mode
-    let playerMode = 'm'
+    let playerMode = 'm', playingId = ''
     function changeMode(mode) {
         playerMode = mode;
-        document.id('playerAud').pause();
-        document.id('playerVid').pause();
+
+        let fromE, toE; // from and to element
         if (mode == 'a') {
             // audio only
-            document.id('playerAud').style.display = 'block';
-            document.id('playerVid').style.display = 'none';
+            fromE = document.id('playerVid');
+            toE = document.id('playerAud');
+            // if src is wrong, then change the src
+            if (toE.src != database[playingId].aUrl)
+                toE.src = database[playingId].aUrl
         } else if (mode == 'm') {
             // mix video mode
-            document.id('playerAud').style.display = 'none';
-            document.id('playerVid').style.display = 'block';
+            fromE = document.id('playerAud');
+            toE = document.id('playerVid');
+            if (toE.src != database[playingId].url)
+                toE.src = database[playingId].url
         }
+
+        fromE.style.display = 'none';
+        toE.style.display = 'block';
+
+        // play time
+        fromE.pause();
+        toE.currentTime = fromE.currentTime;
+        toE.play();
     }
-    changeMode('m'); // init
 
     // loop
     function toggleLoop(btn) {
@@ -62,6 +75,8 @@
     // fetch database
     fetch('/database').then(res => res.json())
     .then(res => {
+        database = res;
+
         let browse = document.id('browse');
         for (const id of Object.keys(res)) {
             // client check links to reduce server load
@@ -73,11 +88,12 @@
 
             div.innerHTML = `<img src="${res[id].thumbnail_url}">`;
             div.addEventListener('click', ev => {
+                playingId = id;
                 document.id('player').style.display = 'block';
                 if (playerMode == 'a')
-                    document.id('playerAud').src = res[id].aUrl
+                    document.id('playerAud').src = res[id].aUrl;
                 else
-                    document.id('playerVid').src = res[id].url
+                    document.id('playerVid').src = res[id].url;
             })
 
             h.innerText = res[id].title
@@ -88,6 +104,7 @@
 
             browse.prepend(div);
         }
+        changeMode('m'); // init
     });
 </script>
 </html>
