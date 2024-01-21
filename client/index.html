@@ -44,6 +44,8 @@
     let playerMode = 'm'
     function changeMode(mode) {
         playerMode = mode;
+        document.id('playerAud').pause();
+        document.id('playerVid').pause();
         if (mode == 'a') {
             // audio only
             document.id('playerAud').style.display = 'block';
