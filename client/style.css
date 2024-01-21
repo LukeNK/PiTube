@@ -40,6 +40,9 @@ nav {
 }
 
 #playerVid {
+    display: block;
+    margin: auto;
+    max-height: 50vh;
     width: 100%;
 }
 

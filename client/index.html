@@ -22,10 +22,22 @@
     </main>
 </body>
 <script>
+    // check url expiration date
+    function expireCheck(url) {
+        url = new URL(url)
+        if (url.searchParams.get('expire') > new Date() / 1000)
+            return true
+        return false
+    }
+
     fetch('/database').then(res => res.json())
     .then(res => {
         let browse = document.getElementById('browse');
         for (const id of Object.keys(res)) {
+            // client check links to reduce server load
+            if (!expireCheck(res[id].url))
+                return fetch('/expire#' + id);
+
             let div = document.createElement('div'),
                 h = document.createElement('h3');
 
@@ -41,6 +53,9 @@
             h.innerText = res[id].title
 
             div.append(h);
+            if (id == location.hash.slice(1))
+                div.click()
+
             browse.prepend(div);
         }
     });

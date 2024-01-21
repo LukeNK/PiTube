@@ -42,6 +42,18 @@ function redirect(res, loc) {
     res.end()
 }
 
+/**
+ * Check if the URL is expired
+ * @param {String} url URL to check
+ * @returns {Boolean} True if the link is still valid
+ */
+function expireCheck(url) {
+    url = new URL(url)
+    if (url.searchParams.get('expire') > new Date() / 1000)
+        return true
+    return false
+}
+
 http.createServer((req, res) => {
     let data = '';
     req.on('data', c => data += c);
@@ -67,6 +79,12 @@ http.createServer((req, res) => {
         } else if (url.pathname.startsWith('/watch'))
             // video param, use for simple replace Youtube links
             url = new URL('/' + url.searchParams.get('v'), `http://${req.headers.host}`);
+        else if (url.pathname.startsWith('/expire')) {
+            database[
+                url.hash.slice(1)
+            ] = undefined
+            res.end();
+        }
 
         // id handling
         let id = url.pathname.slice(1); // slice the slash
@@ -79,11 +97,8 @@ http.createServer((req, res) => {
         }
 
         // if id exists in database, parse expire
-        if (database[id]) {
-            let vid = new URL(database[id].url)
-            if (vid.searchParams.get('expire') > new Date() / 1000)
-                return redirect(res, database[id].url);
-        }
+        if (database[id] && expireCheck(database[id].url))
+            return redirect(res, `/client/index.html#` + id);
 
         // get download link
         console.log('[Download] ' + id);
@@ -104,8 +119,7 @@ http.createServer((req, res) => {
                 )
                     urls.push(vid.url)
             });
-            urls.forEach(value => res.write(value + '\n\n'));
-            res.end();
+            redirect(res, `/client/index.html#` + id);
 
             database[id].url = urls[0];
             database.save();
