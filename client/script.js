@@ -117,7 +117,7 @@ fetch('/database').then(res => res.json())
                 // info
                 document.id('info').innerHTML = `
                     <p><b>${res[id].author}</b></p>
-                    <p>${res[id].description.replaceAll('\n', '<br>')}</p>`;
+                    <p>${res[id].description.replace(new RegExp('\n', 'g'), '<br>')}</p>`;
             })
 
         h.innerText = res[id].title
