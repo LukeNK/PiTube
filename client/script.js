@@ -82,6 +82,8 @@ function playerControls(elm) {
 }
 
 function openFullscreen(elm) {
+    if (document.fullscreenElement)
+        return closeFullscreen()
     if (elm.requestFullscreen) {
       elm.requestFullscreen();
     } else if (elm.webkitRequestFullscreen) { /* Safari */
