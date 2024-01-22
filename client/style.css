@@ -134,6 +134,7 @@ main {
     overflow-y: auto;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 #browse > div {
