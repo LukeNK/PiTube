@@ -12,7 +12,9 @@
 
 /* ---------------------------------Elements--------------------------------- */
 input[type=range] {
+    display: block;
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     background-color: var(--color-dark);
     outline: none;
