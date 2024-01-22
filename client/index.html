@@ -11,8 +11,11 @@
         <div id="player">
             <video id="playerVid" onclick="playerVid.paused ? playerVid.play() : playerVid.pause();"></video>
             <audio id="playerAud"></audio>
-            <input id="currentTime" type="range" min="0" max="100" value="0" onchange="playerControls(this)">
-            <input id="volume" type="range" min="0" max="1" step="0.05" value="1" onchange="playerControls(this)">
+            <div>
+                <button>Play</button>
+                <input id="currentTime" type="range" min="0" max="100" value="0" onchange="playerControls(this)">
+                <input id="volume" type="range" min="0" max="1" step="0.05" value="1" onchange="playerControls(this)">
+            </div>
         </div>
         <div id="tabs">
             <button onclick="toggleTab(this)">Controls</button>
