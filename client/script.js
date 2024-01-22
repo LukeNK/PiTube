@@ -152,8 +152,8 @@ function toggleLoop(btn) {
 
             // info
             document.id('info').innerHTML = `
-            <p><b>${database[id].author}</b></p>
-            <p>${database[id].description.replace(new RegExp('\n', 'g'), '<br>')}</p>`;
+                <h2><b>${database[id].author}</b> - ${database[id].title}</h2>
+                <p>${database[id].description.replace(new RegExp('\n', 'g'), '<br>')}</p>`;
         }
 
         h.innerText = database[id].title
