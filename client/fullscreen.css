@@ -1,0 +1,30 @@
+#player:fullscreen div {
+    position: fixed;
+    left: 0; bottom: 0;
+    width: 100%;
+    height: var(--controls-height);
+    align-items: end !important;
+}
+
+#player:fullscreen #playerVid {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Do not put small control on phone */
+@media screen and (min-width: 600px) {
+    #player:fullscreen input[type=range],
+    #player:fullscreen input[type=range]::-webkit-slider-thumb {
+        height: 0.1rem;
+    }
+
+    #player:fullscreen div:hover input[type=range],
+    #player:fullscreen div:hover input[type=range]::-webkit-slider-thumb {
+        height: var(--controls-height);
+    }
+
+    :fullscreen #playerVid {
+        max-height: 100vh;
+    }
+}

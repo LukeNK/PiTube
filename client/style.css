@@ -63,6 +63,7 @@ main {
 }
 
 #player {
+    --controls-height: 2rem;
     background-color: black;
     width: 100%;
     display: none;
@@ -83,14 +84,14 @@ main {
     background-color: inherit;
     margin: 0;
     width: 100%;
-    height: 2rem;
+    height: var(--controls-height);
 }
 #player input[type=range]:hover {
     border-left: 0.25rem solid var(--color-red);
     border-right: 0.25rem solid var(--color-theme);
 }
 #player input[type=range]::-webkit-slider-thumb {
-    height: 2rem;
+    height: var(--controls-height);
     background: var(--color-dark);
 }
 #player input[type=range]::-webkit-slider-thumb:hover {

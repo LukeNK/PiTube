@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="fullscreen.css">
 </head>
 <body>
     <main>
         <div id="player">
-            <video id="playerVid" onclick="playerControls('Play')"></video>
+            <video id="playerVid" onclick="playerControls('p')"></video>
             <audio id="playerAud"></audio>
             <div>
-                <button onclick="playerControls(this)">Play</button>
+                <button onclick="playerControls(this)">P</button>
                 <input id="currentTime" type="range" min="0" max="100" value="0" onchange="playerControls(this)">
                 <input id="volume" type="range" min="0" max="1" step="0.05" value="1" onchange="playerControls(this)">
+                <button onclick="playerControls(this)">F</button>
             </div>
         </div>
         <div id="tabs">

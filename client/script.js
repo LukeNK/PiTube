@@ -67,17 +67,37 @@ toggleTab({innerText: 'browse'}); // init
  * @param {Element|String} elm Element that invoked the function
  */
 function playerControls(elm) {
-    if (elm == 'Play' ||elm.innerText == 'Play') {
+    if (elm == 'p' || elm.innerText == 'P') {
         if (playerMode == 'a')
             playerAud.paused ? playerAud.play() : playerAud.pause();
         else
             playerVid.paused ? playerVid.play() : playerVid.pause();
         return
-    }
+    } else if (elm.innerText == 'F')
+        return openFullscreen(document.id('player'))
 
     // sliders
     playerAud[elm.id] = elm.value;
     playerVid[elm.id] = elm.value;
+}
+
+function openFullscreen(elm) {
+    if (elm.requestFullscreen) {
+      elm.requestFullscreen();
+    } else if (elm.webkitRequestFullscreen) { /* Safari */
+      elm.webkitRequestFullscreen();
+    } else if (elm.msRequestFullscreen) { /* IE11 */
+      elm.msRequestFullscreen();
+    }
+}
+function closeFullscreen() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { /* Safari */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE11 */
+      document.msExitFullscreen();
+    }
 }
 
 // loop
