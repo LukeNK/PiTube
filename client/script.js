@@ -75,7 +75,7 @@ function playerControls(elm) {
         else
             playerVid.paused ? playerVid.play() : playerVid.pause();
         return
-    } else if (elm.innerText == 'F')
+    } else if (elm == 'f' || elm.innerText == 'F')
         return openFullscreen(document.id('player'))
 
     // sliders
@@ -123,13 +123,14 @@ function toggleLoop(btn) {
             fetch('/expire/' + id);
             // expired, red out and click event update the video
             div.classList.add('redBg');
-            div.addEventListener('click', ev => {
-                fetch('/' + id).then(async () => {
-                    database = await fetch('/database').then(res => res.json());
-                    openVid();
-                    div.classList.remove('redBg')
-                    div.onclick = openVid; // overwrite event listener
-                })
+            div.addEventListener('click', async ev => {
+                div.style.cursor = 'wait';
+                await fetch('/' + id)
+                database = await fetch('/database').then(res => res.json());
+                div.classList.remove('redBg');
+                div.style.cursor = '';
+                openVid();
+                div.onclick = openVid; // overwrite event listener
             })
         } else
             div.addEventListener('click', openVid)
@@ -183,6 +184,10 @@ document.onkeydown = (ev) => {
                 Number(document.id('volume').value)
                 + (ev.key[5] == 'U'? 0.05 : -0.05); // add when up
             playerControls(document.id('volume'));
+            break;
+
+        case 'f':
+            playerControls('f')
             break;
 
         case 'm':
