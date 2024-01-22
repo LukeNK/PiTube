@@ -60,7 +60,7 @@ function toggleTab(elm) {
             document.id(val).style.display = 'none';
     })
 }
-toggleTab({innerText: 'browse'}); // init
+toggleTab({ innerText: 'browse' }); // init
 
 /**
  * Control players
@@ -85,20 +85,20 @@ function openFullscreen(elm) {
     if (document.fullscreenElement)
         return closeFullscreen()
     if (elm.requestFullscreen) {
-      elm.requestFullscreen();
+        elm.requestFullscreen();
     } else if (elm.webkitRequestFullscreen) { /* Safari */
-      elm.webkitRequestFullscreen();
+        elm.webkitRequestFullscreen();
     } else if (elm.msRequestFullscreen) { /* IE11 */
-      elm.msRequestFullscreen();
+        elm.msRequestFullscreen();
     }
 }
 function closeFullscreen() {
     if (document.exitFullscreen) {
-      document.exitFullscreen();
+        document.exitFullscreen();
     } else if (document.webkitExitFullscreen) { /* Safari */
-      document.webkitExitFullscreen();
+        document.webkitExitFullscreen();
     } else if (document.msExitFullscreen) { /* IE11 */
-      document.msExitFullscreen();
+        document.msExitFullscreen();
     }
 }
 
@@ -112,58 +112,58 @@ function toggleLoop(btn) {
 
 // fetch database
 fetch('/database').then(res => res.json())
-.then(res => {
-    database = res;
+    .then(res => {
+        database = res;
 
-    let browse = document.id('browse');
-    for (const id of Object.keys(res)) {
-        let div = document.createElement('div'),
-            h = document.createElement('h3');
+        let browse = document.id('browse');
+        for (const id of Object.keys(res)) {
+            let div = document.createElement('div'),
+                h = document.createElement('h3');
 
-        div.innerHTML = `<img src="${res[id].thumbnail_url}">`;
-        // client check links expire to reduce server load
-        if (!expireCheck(res[id].url)) {
-            fetch('/expire/' + id);
-            // expired, red out and click event redirects
-            div.classList.add('redBg');
-            div.addEventListener('click', ev => {
-                window.location.href = '/' + id
-            })
-        } else
-            div.addEventListener('click', ev => {
-                playingId = id;
+            div.innerHTML = `<img src="${res[id].thumbnail_url}">`;
+            // client check links expire to reduce server load
+            if (!expireCheck(res[id].url)) {
+                fetch('/expire/' + id);
+                // expired, red out and click event redirects
+                div.classList.add('redBg');
+                div.addEventListener('click', ev => {
+                    window.location.href = '/' + id
+                })
+            } else
+                div.addEventListener('click', ev => {
+                    playingId = id;
 
-                document.id('player').style.display = 'block';
-                if (playerMode == 'a') {
-                    playerAud.src = res[id].aUrl;
-                    playerAud.play();
-                } else {
-                    playerVid.src = res[id].url;
-                    playerVid.play();
-                }
+                    document.id('player').style.display = 'block';
+                    if (playerMode == 'a') {
+                        playerAud.src = res[id].aUrl;
+                        playerAud.play();
+                    } else {
+                        playerVid.src = res[id].url;
+                        playerVid.play();
+                    }
 
-                // controls
-                document.id('currentTime').max = res[id].length;
+                    // controls
+                    document.id('currentTime').max = res[id].length;
 
-                // info
-                document.id('info').innerHTML = `
+                    // info
+                    document.id('info').innerHTML = `
                     <p><b>${res[id].author}</b></p>
                     <p>${res[id].description.replace(new RegExp('\n', 'g'), '<br>')}</p>`;
-            })
+                })
 
-        h.innerText = res[id].title
+            h.innerText = res[id].title
 
-        div.append(h);
-        if (id == location.hash.slice(1))
-            div.click()
+            div.append(h);
+            if (id == location.hash.slice(1))
+                div.click()
 
-        browse.prepend(div);
-    }
-});
+            browse.prepend(div);
+        }
+    });
 
 // intervals
 setInterval(() => {
     // move slider
     document.id('currentTime').value =
-        (playerMode == 'a'? playerAud : playerVid).currentTime;
+        (playerMode == 'a' ? playerAud : playerVid).currentTime;
 }, 1000);

@@ -111,7 +111,7 @@ http.createServer((req, res) => {
                 thumbnail_url: info.videoDetails.thumbnails[0].url,
             }
 
-            info.formats.forEach(vid  => {
+            info.formats.forEach(vid => {
                 if (
                     vid.hasAudio && vid.hasVideo
                     && vid.container == 'mp4'
