@@ -1,6 +1,9 @@
 let database = {}; // database
 document.id = document.getElementById;
 
+const playerAud = document.getElementById('playerAud'),
+    playerVid = document.getElementById('playerVid');
+
 // check url expiration date
 function expireCheck(url) {
     url = new URL(url)
@@ -16,8 +19,8 @@ function toggleMode(btn) {
     let fromE, toE; // from and to element
     if (playerMode == 'm') {
         // switch to audio
-        fromE = document.id('playerVid');
-        toE = document.id('playerAud');
+        fromE = playerVid;
+        toE = playerAud;
         // if src is wrong, then change the src
         if (toE.src != database[playingId].aUrl)
             toE.src = database[playingId].aUrl;
@@ -26,8 +29,8 @@ function toggleMode(btn) {
         btn.innerText = 'Mode: audio';
     } else if (playerMode == 'a') {
         // switch to mix video mode
-        fromE = document.id('playerAud');
-        toE = document.id('playerVid');
+        fromE = playerAud;
+        toE = playerVid;
         if (toE.src != database[playingId].url)
             toE.src = database[playingId].url;
 
@@ -59,10 +62,19 @@ function toggleTab(elm) {
 }
 toggleTab({innerText: 'browse'}); // init
 
+/**
+ * Control players
+ * @param {Element} elm Element that invoked the function
+ */
+function playerControls(elm) {
+    playerAud[elm.id] = elm.value;
+    playerVid[elm.id] = elm.value;
+}
+
 // loop
 function toggleLoop(btn) {
-    document.id('playerVid').loop = !document.id('playerVid').loop;
-    document.id('playerAud').loop = !document.id('playerAud').loop;
+    playerVid.loop = !playerVid.loop;
+    playerAud.loop = !playerAud.loop;
     // button color
     btn.classList.toggle('redBg')
 }
@@ -86,19 +98,27 @@ fetch('/database').then(res => res.json())
             div.addEventListener('click', ev => {
                 window.location.href = '/' + id
             })
-        } else {
+        } else
             div.addEventListener('click', ev => {
                 playingId = id;
+
                 document.id('player').style.display = 'block';
                 if (playerMode == 'a') {
-                    document.id('playerAud').src = res[id].aUrl;
-                    document.id('playerAud').play();
+                    playerAud.src = res[id].aUrl;
+                    playerAud.play();
                 } else {
-                    document.id('playerVid').src = res[id].url;
-                    document.id('playerVid').play();
+                    playerVid.src = res[id].url;
+                    playerVid.play();
                 }
+
+                // controls
+                document.id('currentTime').max = res[id].length;
+
+                // info
+                document.id('info').innerHTML = `
+                    <p><b>${res[id].author}</b></p>
+                    <p>${res[id].description.replaceAll('\n', '<br>')}</p>`;
             })
-        }
 
         h.innerText = res[id].title
 
@@ -109,3 +129,10 @@ fetch('/database').then(res => res.json())
         browse.prepend(div);
     }
 });
+
+// intervals
+setInterval(() => {
+    // move slider
+    document.id('currentTime').value =
+        (playerMode == 'a'? playerAud : playerVid).currentTime;
+}, 1000);

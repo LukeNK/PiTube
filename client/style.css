@@ -6,6 +6,8 @@
     --color-red: #ef626cff;
     --color-theme: #84dccfff;
     --color-dark: #312f2fff;
+
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 /* ---------------------------------Elements--------------------------------- */
@@ -50,6 +52,10 @@ main {
     width: 100%;
     display: none;
 }
+#player input[type=range] {
+    margin: 0;
+    width: 100%;
+}
 
 #playerVid {
     display: block;
@@ -71,9 +77,13 @@ main {
 }
 
 #controls {
+    overflow-y: auto;
+    width: 100%;
 }
 
 #info {
+    overflow-y: auto;
+    padding: 1rem;
 }
 
 #browse {
