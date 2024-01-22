@@ -25,21 +25,24 @@ function toggleMode(btn) {
         if (toE.src != database[playingId].aUrl)
             toE.src = database[playingId].aUrl;
 
+        playerVid.style.display = 'none'; // no display
+        document.id('fullscreen').style.display = 'none'; // remove control
+
         playerMode = 'a';
         btn.innerText = 'Mode: audio';
     } else if (playerMode == 'a') {
         // switch to mix video mode
         fromE = playerAud;
         toE = playerVid;
-        if (toE.src != database[playingId].url)
-            toE.src = database[playingId].url;
+        if (playerVid.src != database[playingId].url)
+            playerVid.src = database[playingId].url;
+
+        playerVid.style.display = 'block'
+        document.id('fullscreen').style.display = 'block';
 
         playerMode = 'm';
         btn.innerText = 'Mode: mix';
     }
-
-    fromE.style.display = 'none';
-    toE.style.display = 'block';
 
     // play time
     fromE.pause();
@@ -81,24 +84,20 @@ function playerControls(elm) {
 }
 
 function openFullscreen(elm) {
-    if (document.fullscreenElement)
-        return closeFullscreen()
-    if (elm.requestFullscreen) {
-        elm.requestFullscreen();
-    } else if (elm.webkitRequestFullscreen) { /* Safari */
-        elm.webkitRequestFullscreen();
-    } else if (elm.msRequestFullscreen) { /* IE11 */
-        elm.msRequestFullscreen();
-    }
+    // close if fullscreen
+    if (document.fullscreenElement) closeFullscreen();
+    else if (elm.requestFullscreen) elm.requestFullscreen();
+    // Safari
+    else if (elm.webkitRequestFullscreen) elm.webkitRequestFullscreen();
+    // IE11
+    else if (elm.msRequestFullscreen) elm.msRequestFullscreen();
 }
 function closeFullscreen() {
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) { /* Safari */
-        document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { /* IE11 */
-        document.msExitFullscreen();
-    }
+    if (document.exitFullscreen) document.exitFullscreen();
+    // Safari
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    // IE11
+    else if (document.msExitFullscreen) document.msExitFullscreen();
 }
 
 // loop
@@ -159,8 +158,7 @@ function toggleLoop(btn) {
         h.innerText = database[id].title
 
         div.append(h);
-        if (id == location.hash.slice(1))
-            div.click()
+        if (id == location.hash.slice(1)) div.click()
 
         browse.prepend(div);
     }
@@ -170,20 +168,23 @@ function toggleLoop(btn) {
 document.onkeydown = (ev) => {
     switch (ev.key) {
         case ' ': playerControls('p'); break;
+
         case 'ArrowLeft':
         case 'ArrowRight':
             document.id('currentTime').value =
                 ~~document.id('currentTime').value
                 + (ev.key[5] == 'L'? -5 : 5); // minus when left
             playerControls(document.id('currentTime'));
-            break
+            break;
+
         case 'ArrowUp':
-            case 'ArrowDown':
+        case 'ArrowDown':
             document.id('volume').value =
                 Number(document.id('volume').value)
                 + (ev.key[5] == 'U'? 0.05 : -0.05); // add when up
             playerControls(document.id('volume'));
             break;
+
         case 'm':
             document.id('volume').value =
                 Number(document.id('volume').value) != 0? 0 : 100;
