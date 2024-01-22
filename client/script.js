@@ -111,55 +111,61 @@ function toggleLoop(btn) {
 }
 
 // fetch database
-fetch('/database').then(res => res.json())
-    .then(res => {
-        database = res;
+(async () => {
+    database = await fetch('/database').then(res => res.json());
 
-        let browse = document.id('browse');
-        for (const id of Object.keys(res)) {
-            let div = document.createElement('div'),
-                h = document.createElement('h3');
+    let browse = document.id('browse');
+    for (const id of Object.keys(database)) {
+        let div = document.createElement('div'),
+            h = document.createElement('h3');
 
-            div.innerHTML = `<img src="${res[id].thumbnail_url}">`;
-            // client check links expire to reduce server load
-            if (!expireCheck(res[id].url)) {
-                fetch('/expire/' + id);
-                // expired, red out and click event redirects
-                div.classList.add('redBg');
-                div.addEventListener('click', ev => {
-                    window.location.href = '/' + id
+        div.innerHTML = `<img src="${database[id].thumbnail_url}">`;
+        // client check links expire to reduce server load
+        if (!expireCheck(database[id].url)) {
+            fetch('/expire/' + id);
+            // expired, red out and click event update the video
+            div.classList.add('redBg');
+            div.addEventListener('click', ev => {
+                fetch('/' + id).then(async () => {
+                    database = await fetch('/database').then(res => res.json());
+                    openVid();
+                    div.classList.remove('redBg')
+                    div.onclick = openVid; // overwrite event listener
                 })
-            } else
-                div.addEventListener('click', ev => {
-                    playingId = id;
+            })
+        } else
+            div.addEventListener('click', openVid)
 
-                    document.id('player').style.display = 'block';
-                    if (playerMode == 'a') {
-                        playerAud.src = res[id].aUrl;
-                        playerAud.play();
-                    } else {
-                        playerVid.src = res[id].url;
-                        playerVid.play();
-                    }
+        function openVid() {
+            playingId = id;
 
-                    // controls
-                    document.id('currentTime').max = res[id].length;
+            document.id('player').style.display = 'block';
+            if (playerMode == 'a') {
+                playerAud.src = database[id].aUrl;
+                playerAud.play();
+            } else {
+                playerVid.src = database[id].url;
+                playerVid.play();
+            }
 
-                    // info
-                    document.id('info').innerHTML = `
-                    <p><b>${res[id].author}</b></p>
-                    <p>${res[id].description.replace(new RegExp('\n', 'g'), '<br>')}</p>`;
-                })
+            // controls
+            document.id('currentTime').max = database[id].length;
 
-            h.innerText = res[id].title
-
-            div.append(h);
-            if (id == location.hash.slice(1))
-                div.click()
-
-            browse.prepend(div);
+            // info
+            document.id('info').innerHTML = `
+            <p><b>${database[id].author}</b></p>
+            <p>${database[id].description.replace(new RegExp('\n', 'g'), '<br>')}</p>`;
         }
-    });
+
+        h.innerText = database[id].title
+
+        div.append(h);
+        if (id == location.hash.slice(1))
+            div.click()
+
+        browse.prepend(div);
+    }
+})();
 
 // intervals
 setInterval(() => {
