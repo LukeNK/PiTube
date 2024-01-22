@@ -69,9 +69,10 @@ main {
     display: none;
 }
 #player button {
+    height: var(--controls-height);
+    padding: 0 1rem;
     background-color: inherit;
     color: var(--color-dark);
-    padding: 0 1rem;
 }
 #player button:hover {
     color: var(--color-theme);

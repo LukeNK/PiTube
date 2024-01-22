@@ -14,13 +14,26 @@
 
 /* Do not put small control on phone */
 @media screen and (min-width: 600px) {
-    #player:fullscreen input[type=range],
-    #player:fullscreen input[type=range]::-webkit-slider-thumb {
-        height: 0.1rem;
+    #player:fullscreen div button,
+    #player:fullscreen div input,
+    #player:fullscreen div input::-webkit-slider-thumb {
+        display: none;
     }
 
-    #player:fullscreen div:hover input[type=range],
-    #player:fullscreen div:hover input[type=range]::-webkit-slider-thumb {
+    #player:fullscreen div:hover button,
+    #player:fullscreen div:hover input,
+    #player:fullscreen div:hover input::-webkit-slider-thumb {
+        /* Shows button when hover */
+        display: block;
+    }
+
+    #player:fullscreen div button:hover,
+    #player:fullscreen div input:hover {
+        background-color: var(--color-dark);
+    }
+
+    #player:fullscreen div:hover input,
+    #player:fullscreen div:hover input::-webkit-slider-thumb {
         height: var(--controls-height);
     }
 
