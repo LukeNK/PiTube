@@ -60,6 +60,7 @@ main {
 
 #playerAud {
     width: 100%;
+    display: none;
 }
 
 #controls {

@@ -78,11 +78,12 @@ http.createServer((req, res) => {
         } else if (url.pathname.startsWith('/watch'))
             // video param, use for simple replace Youtube links
             url = new URL('/' + url.searchParams.get('v'), `http://${req.headers.host}`);
-        else if (url.pathname.startsWith('/expire')) {
-            database[
-                url.hash.slice(1)
-            ] = undefined
-            res.end();
+        else if (url.pathname.startsWith('/expire/')) {
+            let id = url.pathname.split('/')[2];
+            console.log('[Expire] ' + id)
+            database[id] = undefined;
+            database.save();
+            return res.end();
         }
 
         // id handling

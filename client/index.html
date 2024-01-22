@@ -13,8 +13,7 @@
             <audio id="playerAud" controls></audio>
         </div>
         <div id="controls">
-            <button onclick="changeMode('a')">Audio</button>
-            <button onclick="changeMode('m')">Mix</button>
+            <button onclick="toggleMode(this)">Mode</button>
             <button onclick="toggleLoop(this)">Loop</button>
             <!-- <button onclick="document.id('playerVid').currentTime += 5">-5s</button>
             <button onclick="document.id('playerVid').currentTime += 5">+5s</button> -->
@@ -36,23 +35,28 @@
 
     // mode
     let playerMode = 'm', playingId = ''
-    function changeMode(mode) {
-        playerMode = mode;
+    function toggleMode(btn) {
 
         let fromE, toE; // from and to element
-        if (mode == 'a') {
-            // audio only
+        if (playerMode == 'm') {
+            // switch to audio
             fromE = document.id('playerVid');
             toE = document.id('playerAud');
             // if src is wrong, then change the src
             if (toE.src != database[playingId].aUrl)
-                toE.src = database[playingId].aUrl
-        } else if (mode == 'm') {
-            // mix video mode
+                toE.src = database[playingId].aUrl;
+
+            playerMode = 'a';
+            btn.innerText = 'Mode: audio';
+        } else if (playerMode == 'a') {
+            // switch to mix video mode
             fromE = document.id('playerAud');
             toE = document.id('playerVid');
             if (toE.src != database[playingId].url)
-                toE.src = database[playingId].url
+                toE.src = database[playingId].url;
+
+            playerMode = 'm';
+            btn.innerText = 'Mode: mix';
         }
 
         fromE.style.display = 'none';
@@ -62,6 +66,7 @@
         fromE.pause();
         toE.currentTime = fromE.currentTime;
         toE.play();
+
     }
 
     // loop
@@ -79,9 +84,11 @@
 
         let browse = document.id('browse');
         for (const id of Object.keys(res)) {
-            // client check links to reduce server load
-            if (!expireCheck(res[id].url))
-                return fetch('/expire#' + id);
+            // client check links expire to reduce server load
+            if (!expireCheck(res[id].url)) {
+                fetch('/expire/' + id);
+                continue;
+            }
 
             let div = document.createElement('div'),
                 h = document.createElement('h3');
@@ -90,10 +97,13 @@
             div.addEventListener('click', ev => {
                 playingId = id;
                 document.id('player').style.display = 'block';
-                if (playerMode == 'a')
+                if (playerMode == 'a') {
                     document.id('playerAud').src = res[id].aUrl;
-                else
+                    document.id('playerAud').play();
+                } else {
                     document.id('playerVid').src = res[id].url;
+                    document.id('playerVid').play();
+                }
             })
 
             h.innerText = res[id].title
@@ -104,7 +114,6 @@
 
             browse.prepend(div);
         }
-        changeMode('m'); // init
     });
 </script>
 </html>
