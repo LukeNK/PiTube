@@ -45,6 +45,20 @@ function toggleMode(btn) {
 
 }
 
+/**
+ * Adjust display
+ * @param {Element} elm Button element
+ */
+function toggleTab(elm) {
+    ['browse', 'controls', 'info'].forEach(val => {
+        if (elm.innerText.toLowerCase() == val)
+            document.id(val).style.display = '';
+        else
+            document.id(val).style.display = 'none';
+    })
+}
+toggleTab({innerText: 'browse'}); // init
+
 // loop
 function toggleLoop(btn) {
     document.id('playerVid').loop = !document.id('playerVid').loop;

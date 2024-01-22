@@ -70,6 +70,12 @@ main {
     width: 100%;
 }
 
+#controls {
+}
+
+#info {
+}
+
 #browse {
     overflow-y: auto;
     display: flex;

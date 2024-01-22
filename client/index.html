@@ -13,10 +13,18 @@
             <audio id="playerAud" controls></audio>
         </div>
         <div id="tabs">
-            <button onclick="toggleMode(this)">Mode</button>
-            <button onclick="toggleLoop(this)">Loop</button>
+            <button onclick="toggleTab(this)">Controls</button>
+            <button onclick="toggleTab(this)">Info</button>
+            <button onclick="toggleTab(this)">Browse</button>
             <!-- <button onclick="document.id('playerVid').currentTime += 5">-5s</button>
             <button onclick="document.id('playerVid').currentTime += 5">+5s</button> -->
+        </div>
+        <div id="controls">
+            <button onclick="toggleMode(this)">Mode</button>
+            <button onclick="toggleLoop(this)">Loop</button>
+        </div>
+        <div id="info">
+
         </div>
         <div id="browse"></div>
     </main>
