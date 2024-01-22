@@ -45,7 +45,6 @@ function toggleMode(btn) {
     fromE.pause();
     toE.currentTime = fromE.currentTime;
     toE.play();
-
 }
 
 /**
@@ -166,6 +165,32 @@ function toggleLoop(btn) {
         browse.prepend(div);
     }
 })();
+
+// shortcuts
+document.onkeydown = (ev) => {
+    switch (ev.key) {
+        case ' ': playerControls('p'); break;
+        case 'ArrowLeft':
+        case 'ArrowRight':
+            document.id('currentTime').value =
+                ~~document.id('currentTime').value
+                + (ev.key[5] == 'L'? -5 : 5); // minus when left
+            playerControls(document.id('currentTime'));
+            break
+        case 'ArrowUp':
+            case 'ArrowDown':
+            document.id('volume').value =
+                Number(document.id('volume').value)
+                + (ev.key[5] == 'U'? 0.05 : -0.05); // add when up
+            playerControls(document.id('volume'));
+            break;
+        case 'm':
+            document.id('volume').value =
+                Number(document.id('volume').value) != 0? 0 : 100;
+            playerControls(document.id('volume'));
+            break;
+    }
+}
 
 // intervals
 setInterval(() => {
