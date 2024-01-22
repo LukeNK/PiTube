@@ -11,7 +11,26 @@
 }
 
 /* ---------------------------------Elements--------------------------------- */
-
+input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: var(--color-dark);
+    outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    background: var(--color-theme);
+    cursor: pointer;
+}
+input[type=range]::-moz-range-thumb {
+    width: 1rem;
+    height: 1rem;
+    background: var(--color-theme);
+    cursor: pointer;
+}
 
 /* ----------------------------------Classes--------------------------------- */
 a.btn, button {
