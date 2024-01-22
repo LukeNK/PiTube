@@ -9,10 +9,10 @@
 <body>
     <main>
         <div id="player">
-            <video id="playerVid" onclick="playerVid.paused ? playerVid.play() : playerVid.pause();"></video>
+            <video id="playerVid" onclick="playerControls('Play')"></video>
             <audio id="playerAud"></audio>
             <div>
-                <button>Play</button>
+                <button onclick="playerControls(this)">Play</button>
                 <input id="currentTime" type="range" min="0" max="100" value="0" onchange="playerControls(this)">
                 <input id="volume" type="range" min="0" max="1" step="0.05" value="1" onchange="playerControls(this)">
             </div>

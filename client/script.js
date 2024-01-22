@@ -64,9 +64,18 @@ toggleTab({innerText: 'browse'}); // init
 
 /**
  * Control players
- * @param {Element} elm Element that invoked the function
+ * @param {Element|String} elm Element that invoked the function
  */
 function playerControls(elm) {
+    if (elm == 'Play' ||elm.innerText == 'Play') {
+        if (playerMode == 'a')
+            playerAud.paused ? playerAud.play() : playerAud.pause();
+        else
+            playerVid.paused ? playerVid.play() : playerVid.pause();
+        return
+    }
+
+    // sliders
     playerAud[elm.id] = elm.value;
     playerVid[elm.id] = elm.value;
 }
