@@ -4,6 +4,10 @@ document.id = document.getElementById;
 const playerAud = document.getElementById('playerAud'),
     playerVid = document.getElementById('playerVid');
 
+let playerMode = 'm', playingId = '',
+    currentPlayer = playerVid,
+    playerRandom = false; // if the player is random next song
+
 // check url expiration date
 function expireCheck(url) {
     url = new URL(url)
@@ -13,9 +17,7 @@ function expireCheck(url) {
 }
 
 // mode
-let playerMode = 'm', playingId = ''
 function toggleMode(btn) {
-
     let fromE, toE; // from and to element
     if (playerMode == 'm') {
         // switch to audio
@@ -43,6 +45,7 @@ function toggleMode(btn) {
         playerMode = 'm';
         btn.innerText = 'Mode: mix';
     }
+    currentPlayer = toE;
 
     // play time
     fromE.pause();
@@ -69,13 +72,11 @@ toggleTab({ innerText: 'browse' }); // init
  * @param {Element|String} elm Element that invoked the function
  */
 function playerControls(elm) {
-    if (elm == 'p' || elm.innerText == 'P') {
-        if (playerMode == 'a')
-            playerAud.paused ? playerAud.play() : playerAud.pause();
-        else
-            playerVid.paused ? playerVid.play() : playerVid.pause();
-        return
-    } else if (elm == 'f' || elm.innerText == 'F')
+    if (elm == 'p' || elm.innerText == 'P')
+        return currentPlayer.paused ?
+            currentPlayer.play()
+            : currentPlayer.pause();
+    else if (elm == 'f' || elm.innerText == 'F')
         return openFullscreen(document.id('player'))
 
     // sliders
@@ -101,10 +102,18 @@ function closeFullscreen() {
 }
 
 // loop
-function toggleLoop(btn) {
-    playerVid.loop = !playerVid.loop;
-    playerAud.loop = !playerAud.loop;
-    // button color
+function toggleList(btn) {
+    switch (btn.innerText) {
+        case 'Loop':
+            playerVid.loop = !playerVid.loop;
+            playerAud.loop = !playerAud.loop;
+            // button color
+            break;
+
+        case 'Random':
+            playerRandom = !playerRandom;
+            break;
+    }
     btn.classList.toggle('redBg')
 }
 
@@ -117,7 +126,9 @@ function toggleLoop(btn) {
         let div = document.createElement('div'),
             h = document.createElement('h3');
 
+        div.id = id;
         div.innerHTML = `<img src="${database[id].thumbnail_url}">`;
+
         // client check links expire to reduce server load
         if (!expireCheck(database[id].url)) {
             fetch('/expire/' + id);
@@ -139,13 +150,8 @@ function toggleLoop(btn) {
             playingId = id;
 
             document.id('player').style.display = 'block';
-            if (playerMode == 'a') {
-                playerAud.src = database[id].aUrl;
-                playerAud.play();
-            } else {
-                playerVid.src = database[id].url;
-                playerVid.play();
-            }
+            currentPlayer.src = database[id][playerMode == 'a'? 'aUrl' : 'url'];
+            currentPlayer.play();
 
             // controls
             document.id('currentTime').max = database[id].length;
@@ -169,6 +175,17 @@ function toggleLoop(btn) {
         browse.prepend(div);
     }
 })();
+
+// function to random at the end of video
+function playerOnended() {
+    // if random next song
+    if (playerRandom) {
+        let ids = Object.keys(database);
+        document.id(ids[~~(Math.random() * ids.length)]).click();
+    }
+}
+playerAud.addEventListener('ended', playerOnended);
+playerVid.addEventListener('ended', playerOnended);
 
 // shortcuts
 document.onkeydown = (ev) => {
@@ -207,5 +224,5 @@ document.onkeydown = (ev) => {
 setInterval(() => {
     // move slider
     document.id('currentTime').value =
-        (playerMode == 'a' ? playerAud : playerVid).currentTime;
+        currentPlayer.currentTime;
 }, 1000);
