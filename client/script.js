@@ -191,8 +191,8 @@ function playerOnended() {
         document.id(ids[~~(Math.random() * ids.length)]).click();
     } else {
         // auto play next
-        let next = ids.indexOf(playingId) + 1;
-        if (next >= ids.length) next = 0; // return overflow
+        let next = ids.indexOf(playingId) - 1; // display order is reversed
+        if (next < 0) next = ids.length - 1; // return overflow
         document.id(ids[next]).click();
     }
 }
