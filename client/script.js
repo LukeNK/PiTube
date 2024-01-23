@@ -147,6 +147,9 @@ function toggleList(btn) {
             div.addEventListener('click', openVid)
 
         function openVid() {
+            if (playingId) document.id(playingId).classList.remove('playing');
+            document.id(id).classList.add('playing')
+
             playingId = id;
 
             document.id('player').style.display = 'block';
@@ -172,9 +175,9 @@ function toggleList(btn) {
         h.innerText = database[id].title
 
         div.append(h);
-        if (id == location.hash.slice(1)) div.click()
-
         browse.prepend(div);
+
+        if (id == location.hash.slice(1)) div.click(); // click after prepend
     }
 })();
 

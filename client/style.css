@@ -15,6 +15,10 @@ a {
     text-decoration: none;
     color: inherit;
 }
+a:hover {
+    text-decoration: underline;
+    color: var(--color-theme);
+}
 
 input[type=range] {
     display: block;
@@ -154,6 +158,12 @@ main {
 #browse > div img {
     max-width: 10rem;
     height: auto;
+}
+#browse > div.playing {
+    background-color: var(--color-dark);
+}
+#browse.noThumbnail > div {
+    width: 15rem;
 }
 #browse.noThumbnail > div img {
     display: none;
