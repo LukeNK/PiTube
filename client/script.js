@@ -153,6 +153,8 @@ function toggleList(btn) {
             currentPlayer.src = database[id][playerMode == 'a'? 'aUrl' : 'url'];
             currentPlayer.play();
 
+            document.title = 'PiTube: ' + database[id].title
+
             // controls
             document.id('currentTime').max = database[id].length;
 
@@ -179,9 +181,15 @@ function toggleList(btn) {
 // function to random at the end of video
 function playerOnended() {
     // if random next song
+    let ids = Object.keys(database);
     if (playerRandom) {
-        let ids = Object.keys(database).filter(val => val != playingId);
+        ids = ids.filter(val => val != playingId);
         document.id(ids[~~(Math.random() * ids.length)]).click();
+    } else {
+        // auto play next
+        let next = ids.indexOf(playingId) + 1;
+        if (next >= ids.length) next = 0; // return overflow
+        document.id(ids[next]).click();
     }
 }
 playerAud.addEventListener('ended', playerOnended);
