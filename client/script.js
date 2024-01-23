@@ -127,7 +127,7 @@ function toggleList(btn) {
             h = document.createElement('h3');
 
         div.id = id;
-        div.innerHTML = `<img src="${database[id].thumbnail_url}">`;
+        div.innerHTML = `<img src="${database[id].thumbnail_url}" loading="lazy">`;
 
         // client check links expire to reduce server load
         if (!expireCheck(database[id].url)) {
