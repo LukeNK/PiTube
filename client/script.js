@@ -152,7 +152,12 @@ function toggleLoop(btn) {
 
             // info
             document.id('info').innerHTML = `
-                <h2><b>${database[id].author}</b> - ${database[id].title}</h2>
+                <h2><a target="_blank" href="https://youtu.be/${id}">
+                    ${database[id].title}
+                </a></h2>
+                <h3><a target="blank" href="${database[id].author_url}">
+                    ${database[id].author}
+                </a></h3>
                 <p>${database[id].description.replace(new RegExp('\n', 'g'), '<br>')}</p>`;
         }
 

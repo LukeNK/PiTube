@@ -107,6 +107,7 @@ http.createServer((req, res) => {
                 title: info.videoDetails.title,
                 description: info.videoDetails.description,
                 author: info.videoDetails.author.name,
+                author_url: info.videoDetails.author.channel_url,
                 length: info.videoDetails.lengthSeconds,
                 thumbnail_url: info.videoDetails.thumbnails[0].url,
             }
