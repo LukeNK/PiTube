@@ -180,7 +180,7 @@ function toggleList(btn) {
 function playerOnended() {
     // if random next song
     if (playerRandom) {
-        let ids = Object.keys(database);
+        let ids = Object.keys(database).filter(val => val != playingId);
         document.id(ids[~~(Math.random() * ids.length)]).click();
     }
 }
