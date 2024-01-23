@@ -181,11 +181,10 @@ function toggleList(btn) {
     }
 })();
 
-// function to random at the end of video
 function playerOnended() {
-    // if random next song
     let ids = Object.keys(database);
     if (playerRandom) {
+        // if random next song
         ids = ids.filter(val => val != playingId);
         document.id(ids[~~(Math.random() * ids.length)]).click();
     } else {
