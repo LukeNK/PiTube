@@ -156,9 +156,11 @@ function toggleList(btn) {
             currentPlayer.src = database[id][playerMode == 'a'? 'aUrl' : 'url'];
             currentPlayer.play();
 
-            document.title = 'PiTube: ' + database[id].title
+            document.title = database[id].title
 
             // controls
+            document.id('tabs').style.display = '';
+            window.location.hash = '#' + id;
             document.id('currentTime').max = database[id].length;
 
             // info
