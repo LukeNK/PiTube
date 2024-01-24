@@ -44,6 +44,7 @@ a.btn, button {
     outline: none;
     border: 0px none transparent;
     background-color: var(--color-theme);
+    color: var(--color-bg);
     text-decoration: none;
     font-size: 18px;
 }

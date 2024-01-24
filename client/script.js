@@ -165,10 +165,12 @@ function toggleList(btn) {
 
             // info
             document.id('info').innerHTML = `
+                <a class="btn" target="_blank" href="${database[id].url}">Video link</a>
+                <a class="btn" target="_blank" href="${database[id].aUrl}">Audio link</a>
                 <h2><a target="_blank" href="https://youtu.be/${id}">
                     ${database[id].title}
                 </a></h2>
-                <h3><a target="blank" href="${database[id].author_url}">
+                <h3><a target="_blank" href="${database[id].author_url}">
                     ${database[id].author}
                 </a></h3>
                 <p>${database[id].description.replace(new RegExp('\n', 'g'), '<br>')}</p>`;
