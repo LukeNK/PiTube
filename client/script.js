@@ -121,8 +121,12 @@ function toggleList(btn) {
 (async () => {
     database = await fetch('/database').then(res => res.json());
 
-    let browse = document.id('browse');
-    for (const id of Object.keys(database)) {
+    let browse = document.id('browse'),
+        idList = Object.keys(database);
+
+    if (idList.length != 0) browse.innerHTML = ''; // clear no message
+
+    for (const id of idList) {
         let div = document.createElement('div'),
             h = document.createElement('h3');
 
@@ -136,7 +140,7 @@ function toggleList(btn) {
             div.classList.add('redBg');
             div.addEventListener('click', async ev => {
                 div.style.cursor = 'wait';
-                await fetch('/' + id)
+                await fetch('/' + id);
                 database = await fetch('/database').then(res => res.json());
                 div.classList.remove('redBg');
                 div.style.cursor = '';
@@ -148,7 +152,7 @@ function toggleList(btn) {
 
         function openVid() {
             if (playingId) document.id(playingId).classList.remove('playing');
-            document.id(id).classList.add('playing')
+            document.id(id).classList.add('playing');
 
             playingId = id;
 
