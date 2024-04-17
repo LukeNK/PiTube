@@ -79,6 +79,7 @@ http.createServer((req, res) => {
             // video param, use for simple replace Youtube links
             url = new URL('/' + url.searchParams.get('v'), `http://${req.headers.host}`);
         else if (url.pathname.startsWith('/expire/')) {
+            // essentially a delete option
             let id = url.pathname.split('/')[2];
             console.log('[Expire] ' + id)
             database[id] = undefined;

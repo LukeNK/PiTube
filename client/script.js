@@ -4,7 +4,8 @@ document.id = document.getElementById;
 const playerAud = document.getElementById('playerAud'),
     playerVid = document.getElementById('playerVid');
 
-let playerMode = 'm', playingId = '',
+let playerMode = 'm',
+    playingId = '', // the id of the playing video
     currentPlayer = playerVid,
     playerRandom = false; // if the player is random next song
 
@@ -101,7 +102,7 @@ function closeFullscreen() {
     else if (document.msExitFullscreen) document.msExitFullscreen();
 }
 
-// loop
+// controls
 function toggleList(btn) {
     switch (btn.innerText) {
         case 'Loop':
@@ -115,6 +116,20 @@ function toggleList(btn) {
             break;
     }
     btn.classList.toggle('redBg')
+}
+
+/**
+ * Mark an ID as expired. This function will be called either when init or when a function delete a video
+ * @param {string} id The ID of the media to mark expired
+ * @param {HTMLDivElement} div To indicate that this function was called as a part of initialization and the div was not present in the DOM tree yet
+ */
+function markExpired(id, div) {
+    fetch('/expire/' + id);
+    (
+        div
+        || document.getElementById(id)
+    ).classList.add('redBg');
+    if (!div) playerOnended(); // move to the next song
 }
 
 // fetch database
@@ -135,9 +150,8 @@ function toggleList(btn) {
 
         // client check links expire to reduce server load
         if (!expireCheck(database[id].url)) {
-            fetch('/expire/' + id);
-            // expired, red out and click event update the video
-            div.classList.add('redBg');
+            markExpired(id, div);
+            // recovery function
             div.addEventListener('click', async ev => {
                 div.style.cursor = 'wait';
                 await fetch('/' + id);
